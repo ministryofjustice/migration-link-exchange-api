@@ -13,7 +13,7 @@ import java.time.OffsetDateTime
 @Service
 class DataSetImporter(
   private val fileInformationRepository: FileInformationRepository,
-  private val migrationRepo: DataMigrationRepository
+  private val migrationRepo: DataMigrationRepository,
 ) {
 
   fun downloadFileToByteArray(url: String): ByteArray = URL(url).readBytes()
@@ -58,7 +58,7 @@ class DataSetImporter(
           googleLastModifyingUser = rowMap["googleLastModifyingUser"] ?: "",
           microsoftUrl = rowMap["microsoftUrl"] ?: "",
           microsoftPath = rowMap["microsoftPath"] ?: "",
-          microsoftFileType = rowMap["microsoftFileType"] ?: ""
+          microsoftFileType = rowMap["microsoftFileType"] ?: "",
         )
         fileInformationBatch.add(fileInfo)
 

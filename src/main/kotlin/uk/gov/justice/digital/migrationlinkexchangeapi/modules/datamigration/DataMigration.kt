@@ -1,6 +1,11 @@
 package uk.gov.justice.digital.migrationlinkexchangeapi.modules.datamigration
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.time.OffsetDateTime
 
 @Entity
@@ -11,5 +16,5 @@ data class DataMigration(
   val id: Long = 0,
   @Column(unique = true, nullable = false)
   val checksum: String,
-  val appliedAt: OffsetDateTime = OffsetDateTime.now()
+  val appliedAt: OffsetDateTime = OffsetDateTime.now(),
 )

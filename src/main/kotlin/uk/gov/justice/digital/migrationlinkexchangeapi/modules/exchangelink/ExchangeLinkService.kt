@@ -6,7 +6,7 @@ import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformationRep
 
 @Service
 class ExchangeLinkService(
-  private val repository: FileInformationRepository
+  private val repository: FileInformationRepository,
 ) {
   private fun extractGoogleFileIdFromGoogleUrl(url: String): String? {
     val allowedDomainPattern = Regex("^https?://(?:docs\\.google|drive\\.google)\\.com")

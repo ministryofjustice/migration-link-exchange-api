@@ -1,15 +1,15 @@
 package uk.gov.justice.digital.migrationlinkexchangeapi.unit.modules.exchangelink
 
-import uk.gov.justice.digital.migrationlinkexchangeapi.modules.exchangelink.ExchangeLinkService
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.junit5.MockKExtension
+import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformation
 import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformationRepository
+import uk.gov.justice.digital.migrationlinkexchangeapi.modules.exchangelink.ExchangeLinkService
 import uk.gov.justice.digital.migrationlinkexchangeapi.modules.exchangelink.FileLookupResult
 import java.time.OffsetDateTime
 
@@ -51,7 +51,7 @@ class ExchangeLinkServiceTest {
       googleLastModifyingUser = "modifier@example.com",
       microsoftUrl = "https://sharepoint.com/sites/team/Shared%20Documents/test-file.docx",
       microsoftPath = "/Shared Documents/test-folder/test-file.docx",
-      microsoftFileType = "docx"
+      microsoftFileType = "docx",
     )
     every { repository.findByGoogleFileId("abc123") } returns listOf(fileInfo).toMutableList()
 
@@ -76,7 +76,7 @@ class ExchangeLinkServiceTest {
       googleLastModifyingUser = "docmodifier@example.com",
       microsoftUrl = "https://sharepoint.com/sites/team/Shared%20Documents/doc-file.docx",
       microsoftPath = "/Shared Documents/test-folder/doc-file.docx",
-      microsoftFileType = "docx"
+      microsoftFileType = "docx",
     )
     every { repository.findByGoogleFileId("xyz789") } returns listOf(fileInfo).toMutableList()
 

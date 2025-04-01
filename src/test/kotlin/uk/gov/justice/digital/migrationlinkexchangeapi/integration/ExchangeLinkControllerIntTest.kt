@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
-import uk.gov.justice.digital.migrationlinkexchangeapi.modules.exchangelink.*
 import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformation
+import uk.gov.justice.digital.migrationlinkexchangeapi.modules.exchangelink.ExchangeLinkService
+import uk.gov.justice.digital.migrationlinkexchangeapi.modules.exchangelink.FileLookupResult
 import java.time.OffsetDateTime
 
 @Import(ExchangeLinkControllerIntTest.TestConfig::class)
@@ -41,7 +42,7 @@ class ExchangeLinkControllerIntTest : IntegrationTestBase() {
     googleLastModifyingUser = "modifier@example.com",
     microsoftUrl = "https://sharepoint.com/sites/team/Shared%20Documents/test-file.docx",
     microsoftPath = "/Shared Documents/test-folder/test-file.docx",
-    microsoftFileType = "docx"
+    microsoftFileType = "docx",
   )
 
   @Nested

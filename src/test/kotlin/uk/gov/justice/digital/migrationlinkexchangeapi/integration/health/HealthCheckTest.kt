@@ -7,7 +7,6 @@ class HealthCheckTest : IntegrationTestBase() {
 
   @Test
   fun `Health page reports ok`() {
-
     webTestClient.get()
       .uri("/health")
       .exchange()
