@@ -5,13 +5,8 @@ management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
 
-hmpps-auth:
-  url: "http://localhost:8090/auth"
-
-# example client configuration for calling out to other services
-# TODO: Remove / replace this configuration
-example-api:
-  url: "http://localhost:8091"
-  client:
-    id: "example-api-client"
-    secret: "example-api-client-secret"
+spring:
+  datasource:
+    url: jdbc:postgresql://${db.endpoint}/${db.name}?currentSchema=${database.schema.name:sentence-plan}&user=${db.username:root}&password=${db.password:dev}&stringtype=unspecified
+    username: ${db.username}
+    password: ${db.password}

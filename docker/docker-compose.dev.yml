@@ -1,0 +1,23 @@
+services:
+  wiremock:
+    image: wiremock/wiremock:3.3.1
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+    command:
+      - --global-response-templating
+      - --verbose
+
+  api:
+    image: ghcr.io/ministryofjustice/migration-link-exchange-api:local
+    build:
+      target: development
+    command: gradle --parallel --build-cache --configuration-cache bootRun
+    depends_on:
+      - wiremock
+    ports:
+      - "5005:5005"
+    volumes:
+      - ..:/app
+      - ~/.gradle:/home/gradle/.gradle

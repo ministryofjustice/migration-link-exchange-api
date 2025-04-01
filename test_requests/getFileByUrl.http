@@ -1,0 +1,5 @@
+GET http://localhost:8080/link?q=https://drive.google.com/file/d/abc123/view
+
+###
+
+GET http://localhost:8080/link/owner?q=https://drive.google.com/file/d/abc123/view

@@ -4,36 +4,27 @@ info.app:
 
 spring:
   application:
-    name: hmpps-template-kotlin
+    name: migration-link-exchange-api
   codec:
     max-in-memory-size: 10MB
-
+  datasource:
+    url: jdbc:postgresql://${db.endpoint}/${db.name}?currentSchema=${database.schema.name:sentence-plan}&user=${db.username:root}&password=${db.password:dev}&stringtype=unspecified
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${hmpps-auth.url}/.well-known/jwks.json
-
-      # TODO: This client section can be removed if your service doesn't call out to other services
-      client:
-        provider:
-          hmpps-auth:
-            token-uri: ${hmpps-auth.url}/oauth/token
-
-        registration:
-          # example client registration for calling out to other services
-          # TODO: Remove / replace this registration
-          example-api:
-            provider: hmpps-auth
-            client-id: ${example-api.client.id}
-            client-secret: ${example-api.client.secret}
-            authorization-grant-type: client_credentials
-            scope: read
+app:
+  migration-csv-url: http://localhost:8081/file-migration.csv
 
 server:
   port: 8080
