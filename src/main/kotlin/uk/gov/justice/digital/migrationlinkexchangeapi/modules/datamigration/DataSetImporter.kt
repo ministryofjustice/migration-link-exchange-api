@@ -6,7 +6,7 @@ import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformation
 import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformationRepository
 import java.io.ByteArrayInputStream
 import java.io.InputStream
-import java.net.URL
+import java.net.URI
 import java.security.MessageDigest
 import java.time.OffsetDateTime
 
@@ -16,7 +16,7 @@ class DataSetImporter(
   private val migrationRepo: DataMigrationRepository,
 ) {
 
-  fun downloadFileToByteArray(url: String): ByteArray = URL(url).readBytes()
+  fun downloadFileToByteArray(url: String): ByteArray = URI.create(url).toURL().readBytes()
 
   fun sha256Hash(inputStream: InputStream): String {
     val buffer = ByteArray(1024)

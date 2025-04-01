@@ -39,13 +39,12 @@ jobs:
       environment: ${{ matrix.environments }}
   kotlin_validate:
     name: Validate the kotlin
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Validate
         run: make dev-up test
-
-    secrets: inherit
   build:
     name: Build docker image from hmpps-github-actions
     if: github.ref == 'refs/heads/main'
