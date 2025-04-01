@@ -27,4 +27,3 @@ services:
       DB_NAME: migration-link-exchange-db
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
-      APP_MIGRATION_CSV_URL: http://wiremock:8080/file-migration.csv

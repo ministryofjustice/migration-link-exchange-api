@@ -18,6 +18,8 @@ services:
       - wiremock
     ports:
       - "5005:5005"
+    environment:
+      APP_MIGRATION_CSV_URL: http://wiremock:8080/file-migration.csv
     volumes:
       - ..:/app
       - ~/.gradle:/home/gradle/.gradle
