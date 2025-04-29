@@ -9,6 +9,8 @@ generic-service:
     tag: app_version # override at deployment time
     port: 8080
 
+  serviceAccountName: "migration-link-exchange-sa"
+
   ingress:
     enabled: true
     host: app-hostname.local # override per environment
