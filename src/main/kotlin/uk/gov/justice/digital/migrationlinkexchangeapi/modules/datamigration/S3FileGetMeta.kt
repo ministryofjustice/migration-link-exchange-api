@@ -7,6 +7,7 @@ package uk.gov.justice.digital.migrationlinkexchangeapi.modules.datamigration
 
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.HeadObjectRequest
+import aws.sdk.kotlin.services.s3.model.HeadObjectResponse
 import aws.smithy.kotlin.runtime.auth.awscredentials.CredentialsProvider
 import aws.smithy.kotlin.runtime.content.decodeToString
 import aws.smithy.kotlin.runtime.net.Host
@@ -28,24 +29,15 @@ class S3FileGetMeta(private val s3ClientConfig: S3ClientConfig) : FileGetMeta {
             forcePathStyle = s3ClientConfig.forcePathStyle
         }
 
-    override suspend fun invoke(path: String): Result<String?> {
-        return runCatching {
-            client.getObject(
-                HeadObjectRequest {
-                    bucket = s3ClientConfig.bucketName
-                    key = path
-                },
-            ) { response ->
-                response.body?.decodeToString()
+        override suspend fun invoke(path: String): Result<String?> {
+            return runCatching {
+                val response: HeadObjectResponse = client.headObject(
+                    HeadObjectRequest {
+                        bucket = s3ClientConfig.bucketName
+                        key = path
+                    },
+                )
+                response.eTag ?: null
             }
         }
-    }
 }
-
-data class S3ClientConfig(
-    val bucketName: String,
-    val region: String,
-    val url: URL,
-    val credentials: CredentialsProvider,
-    var forcePathStyle: Boolean = false,
-)

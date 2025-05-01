@@ -56,7 +56,21 @@
      private fun `then the file meta content is correct`(response: Result<String>) {
  
         assertTrue(response.isSuccess)
-        //  TODO get ETAG
+
+        // Check the type of the response is a string.
+        assertTrue(response.getOrNull() is String)
+
+        // It must match the char length 32
+        assertEquals(
+            34,
+            response.getOrNull()?.length,
+        )
+
+        // It must match the expected regex pattern.
+        assertTrue(
+            response.getOrNull()?.matches(Regex("^\"[a-f0-9]{32}\"$")) == true,
+        )
+
      }
  
      private fun `given there is a uploaded file in`(
