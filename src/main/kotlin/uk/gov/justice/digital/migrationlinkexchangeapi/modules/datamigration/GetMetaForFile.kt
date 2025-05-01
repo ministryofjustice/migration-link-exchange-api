@@ -18,5 +18,3 @@ class GetMetaForFile(private val getMeta: FileGetMeta) {
             },
         )
 }
-
-data class FileNotExists(val path: String) : Throwable("The file at $path doesn't exists")
