@@ -20,6 +20,9 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.postgresql:postgresql")
 
+  // S3 dependencies
+  implementation("aws.sdk.kotlin:s3:1.0.30")
+
   testImplementation("org.wiremock:wiremock-standalone:3.11.0")
   testImplementation("com.ninja-squad:springmockk:4.0.2")
   testImplementation("io.swagger.parser.v3:swagger-parser:2.1.25") {
