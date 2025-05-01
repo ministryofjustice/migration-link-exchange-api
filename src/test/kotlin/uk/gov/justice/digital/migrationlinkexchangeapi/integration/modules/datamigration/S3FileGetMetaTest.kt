@@ -111,4 +111,3 @@ class GetMetaForFileIntegrationTest {
         private val file = File("./src/test/kotlin/uk/gov/justice/digital/migrationlinkexchangeapi/integration/modules/datamigration/file.txt")
     }
 }
- 
