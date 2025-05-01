@@ -29,13 +29,22 @@ class DataSetImporter(
   }
 
   fun importFromUrl(fileUrl: String) {
+    // TODO: Get the ETAG from S3
+    // val s3Etag = 
+    // if (migrationRepo.existsByChecksum(s3Etag)) {
+    //   println("Migration with etag $s3Etag has already been applied. Skipping.")
+    //   return
+    // }
+
     val csvBytes = try {
+      // TODO: Download from S3
       downloadFileToByteArray(fileUrl)
     } catch (e: Exception) {
       println("Unable to download file from $fileUrl: ${e.message}. Skipping import.")
       return
     }
 
+    // TODO: Change the checksum to the S3 ETAG
     val checksum = sha256Hash(ByteArrayInputStream(csvBytes))
     if (migrationRepo.existsByChecksum(checksum)) {
       println("Migration with checksum $checksum has already been applied. Skipping.")
