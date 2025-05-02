@@ -16,6 +16,20 @@ class DataSetImporter(
   private val migrationRepo: DataMigrationRepository,
 ) {
 
+  // fun getS3Config(): S3ClientConfig {
+  //   // TODO use env variable
+  //   return S3ClientConfig(
+  //     bucketName = "dev-bucket",
+  //     region = "us-east-1",
+  //     url = URI.create("http://minio:9000").toURL(),
+  //     forcePathStyle = true,
+  //     credentials = StaticCredentialsProvider {
+  //       accessKeyId = "minio-user"
+  //       secretAccessKey = "minio-pass"
+  //     },
+  //   )
+  // }
+
   fun downloadFileToByteArray(url: String): ByteArray = URI.create(url).toURL().readBytes()
 
   fun sha256Hash(inputStream: InputStream): String {
@@ -29,13 +43,23 @@ class DataSetImporter(
   }
 
   fun importFromUrl(fileUrl: String) {
+    // TODO: Get the ETAG from S3
+    val etag: String = "\"dummy-etag\"" // Replace with actual ETAG retrieval logic
+
+    if (migrationRepo.existsByEtag(etag)) {
+      println("Migration with etag $etag has already been applied. Skipping.")
+      return
+    }
+
     val csvBytes = try {
+      // TODO: Download from S3
       downloadFileToByteArray(fileUrl)
     } catch (e: Exception) {
       println("Unable to download file from $fileUrl: ${e.message}. Skipping import.")
       return
     }
 
+    // TODO: Change the checksum to the S3 ETAG
     val checksum = sha256Hash(ByteArrayInputStream(csvBytes))
     if (migrationRepo.existsByChecksum(checksum)) {
       println("Migration with checksum $checksum has already been applied. Skipping.")
@@ -73,7 +97,7 @@ class DataSetImporter(
       fileInformationRepository.saveAll(fileInformationBatch)
     }
 
-    migrationRepo.save(DataMigration(checksum = checksum))
-    println("Migration applied with checksum $checksum")
+    migrationRepo.save(DataMigration(etag = etag, checksum = checksum))
+    println("Migration applied with etag $etag and checksum $checksum")
   }
 }

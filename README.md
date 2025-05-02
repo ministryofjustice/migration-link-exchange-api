@@ -20,7 +20,7 @@ graph-like cases (e.g. Google shortcuts and shared folders).
     - Supports one Google file to many Microsoft file relationships
 - **CSV import from remote URL**
     - Download and ingest file mappings from external systems
-    - Imports CSV migration data only if the file contents have changed (via SHA‑256 checksum)
+    - Imports CSV migration data only if the file contents have changed (via S3's ETAG & SHA‑256 checksum)
 - **JPA-backed persistence**
     - Store relationships between files
     - Tables/Schema created automatically on startup
