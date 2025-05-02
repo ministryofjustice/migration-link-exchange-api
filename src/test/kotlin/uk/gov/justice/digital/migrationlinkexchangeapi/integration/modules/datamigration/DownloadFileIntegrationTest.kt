@@ -28,22 +28,11 @@ class DownloadFileIntegrationTest {
     fun `should download file successfully`() {
         val s3Endpoint = URI.create("http://minio:9000")
         `given there is a uploaded file in`("file.txt", s3Endpoint)
+        val s3Config = GetS3ClientConfig().getS3Client()
         val result =
             runBlocking {
                 DownloadFile(
-                    S3FileDownloader(
-                        S3ClientConfig(
-                            bucketName = "dev-bucket",
-                            region = "us-east-1",
-                            url = s3Endpoint.toURL(),
-                            forcePathStyle = true,
-                            credentials =
-                                StaticCredentialsProvider {
-                                    accessKeyId = "minio-user"
-                                    secretAccessKey = "minio-pass"
-                                },
-                        ),
-                    ),
+                    S3FileDownloader(s3Config),
                 ).run {
                     this(
                         path = "file.txt",

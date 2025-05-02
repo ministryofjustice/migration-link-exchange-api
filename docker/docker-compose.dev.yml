@@ -28,6 +28,11 @@ services:
       - "5005:5005"
     environment:
       APP_MIGRATION_CSV_URL: http://wiremock:8080/file-migration.csv
+      S3_BUCKET: dev-bucket
+      S3_REGION: "us-east-1"
+      MINIO_USER: minio-user
+      MINIO_PASSWORD: minio-pass
+      MINIO_ENDPOINT: http://minio:9000
     volumes:
       - ..:/app
       - ~/.gradle:/home/gradle/.gradle
