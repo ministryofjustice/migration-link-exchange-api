@@ -4,9 +4,13 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformation
 import uk.gov.justice.digital.migrationlinkexchangeapi.common.FileInformationRepository
+import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.net.URI
+import java.nio.charset.StandardCharsets
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.security.MessageDigest
 import java.time.OffsetDateTime
 
@@ -16,21 +20,44 @@ class DataSetImporter(
   private val migrationRepo: DataMigrationRepository,
 ) {
 
-  // fun getS3Config(): S3ClientConfig {
-  //   // TODO use env variable
-  //   return S3ClientConfig(
-  //     bucketName = "dev-bucket",
-  //     region = "us-east-1",
-  //     url = URI.create("http://minio:9000").toURL(),
-  //     forcePathStyle = true,
-  //     credentials = StaticCredentialsProvider {
-  //       accessKeyId = "minio-user"
-  //       secretAccessKey = "minio-pass"
-  //     },
-  //   )
-  // }
+  val s3Config = GetS3ClientConfig().getS3Client()
 
-  fun downloadFileToByteArray(url: String): ByteArray = URI.create(url).toURL().readBytes()
+  fun getEtag(path: String): String {
+    val result = runBlocking {
+        GetMetaForFile(
+          S3FileGetMeta(s3Config),
+        ).run {
+          this(
+              path = path,
+          )
+        }
+      }
+    return result.getOrThrow()
+  }
+
+  fun downloadFileToPath(sourcePath: String, destinationPath: Path): String {
+    val result =  runBlocking {
+        DownloadFile(
+          S3FileDownloader(s3Config),
+        ).run {
+          this(
+            sourcePath = sourcePath,
+            destinationPath = destinationPath,
+          )
+        }
+      }
+    return result.getOrThrow()
+  }
+
+  fun parseGoogleLastAccessedTime(
+    googleLastAccessedTime: String?,
+  ): OffsetDateTime? {
+    return if (googleLastAccessedTime == null || googleLastAccessedTime == "N/A") {
+      null
+    } else {
+      OffsetDateTime.parse(googleLastAccessedTime)
+    }
+  }
 
   fun sha256Hash(inputStream: InputStream): String {
     val buffer = ByteArray(1024)
@@ -43,24 +70,33 @@ class DataSetImporter(
   }
 
   fun importFromUrl(fileUrl: String) {
-    // TODO: Get the ETAG from S3
-    val etag: String = "\"dummy-etag\"" // Replace with actual ETAG retrieval logic
+
+    val datasetPath = "build-output/dataset.csv"
+    val fsPath = Paths.get("/tmp/$datasetPath")
+
+    val etag = try {
+      getEtag(datasetPath)
+    } catch (e: Exception) {
+      println("Unable to get etag for $datasetPath. Skipping import.")
+      return
+    }
 
     if (migrationRepo.existsByEtag(etag)) {
       println("Migration with etag $etag has already been applied. Skipping.")
       return
     }
 
-    val csvBytes = try {
-      // TODO: Download from S3
-      downloadFileToByteArray(fileUrl)
+    try {
+      downloadFileToPath(
+        sourcePath = datasetPath,
+        destinationPath = fsPath,
+      )
     } catch (e: Exception) {
-      println("Unable to download file from $fileUrl: ${e.message}. Skipping import.")
+      println("Unable to download file for $datasetPath. Skipping import.")
       return
     }
 
-    // TODO: Change the checksum to the S3 ETAG
-    val checksum = sha256Hash(ByteArrayInputStream(csvBytes))
+    val checksum = sha256Hash(fsPath.toFile().inputStream())
     if (migrationRepo.existsByChecksum(checksum)) {
       println("Migration with checksum $checksum has already been applied. Skipping.")
       return
@@ -69,7 +105,9 @@ class DataSetImporter(
     val fileInformationBatch = mutableListOf<FileInformation>()
     val batchSize = 500
 
-    csvReader().open(ByteArrayInputStream(csvBytes)) {
+    var csvStream = fsPath.toFile().inputStream()
+
+    csvReader().open(csvStream) {
       val rowsSequence = readAllWithHeaderAsSequence()
       rowsSequence.forEach { rowMap ->
         val fileInfo = FileInformation(
@@ -78,7 +116,7 @@ class DataSetImporter(
           googlePath = rowMap["googlePath"] ?: "",
           googleUrl = rowMap["googleUrl"] ?: "",
           googleOwnerEmail = rowMap["googleOwnerEmail"] ?: "",
-          googleLastAccessedTime = OffsetDateTime.parse(rowMap["googleLastAccessedTime"]),
+          googleLastAccessedTime = parseGoogleLastAccessedTime(rowMap["googleLastAccessedTime"]),
           googleLastModifyingUser = rowMap["googleLastModifyingUser"] ?: "",
           microsoftUrl = rowMap["microsoftUrl"] ?: "",
           microsoftPath = rowMap["microsoftPath"] ?: "",
@@ -96,6 +134,9 @@ class DataSetImporter(
     if (fileInformationBatch.isNotEmpty()) {
       fileInformationRepository.saveAll(fileInformationBatch)
     }
+
+    csvStream.close()
+    fsPath.toFile().delete()
 
     migrationRepo.save(DataMigration(etag = etag, checksum = checksum))
     println("Migration applied with etag $etag and checksum $checksum")

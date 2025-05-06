@@ -19,8 +19,11 @@ import java.io.File
 import java.io.InputStreamReader
 import java.net.URI
 import java.nio.charset.StandardCharsets
+import java.nio.file.Path
+import java.nio.file.Paths
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+
 
 
 class DownloadFileIntegrationTest {
@@ -28,6 +31,7 @@ class DownloadFileIntegrationTest {
     fun `should download file successfully`() {
         val s3Endpoint = URI.create("http://minio:9000")
         `given there is a uploaded file in`("file.txt", s3Endpoint)
+        `given there is no file on the filesystem at`("/tmp/tests/file.txt")
         val s3Config = GetS3ClientConfig().getS3Client()
         val result =
             runBlocking {
@@ -35,7 +39,8 @@ class DownloadFileIntegrationTest {
                     S3FileDownloader(s3Config),
                 ).run {
                     this(
-                        path = "file.txt",
+                        sourcePath = "file.txt",
+                        destinationPath = Paths.get("/tmp/tests/file.txt"),
                     )
                 }
             }
@@ -45,13 +50,18 @@ class DownloadFileIntegrationTest {
     private fun `then the file downloaded content is correct`(response: Result<String>) {
 
         assertTrue(response.isSuccess)
+        
+        // Check it returns the file path
         assertEquals(
-            "Hello world!",
+            "/tmp/tests/file.txt",
             response.getOrNull(),
         )
+
+        // Check the file has the correct content
         assertEquals(
             InputStreamReader(file.inputStream(), StandardCharsets.UTF_8).readText(),
-            response.getOrNull(),
+            InputStreamReader(File("/tmp/tests/file.txt").inputStream(), StandardCharsets.UTF_8)
+                .readText(),
         )
     }
 
@@ -86,6 +96,16 @@ class DownloadFileIntegrationTest {
                         },
                     )
             }
+        }
+    }
+
+
+    private fun `given there is no file on the filesystem at`(
+        path: String,
+    ) {
+        val file = File(path)
+        if (file.exists()) {
+            file.delete()
         }
     }
 

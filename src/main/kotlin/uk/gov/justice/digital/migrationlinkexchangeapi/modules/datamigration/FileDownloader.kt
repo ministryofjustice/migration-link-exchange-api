@@ -5,6 +5,8 @@
 
 package uk.gov.justice.digital.migrationlinkexchangeapi.modules.datamigration
 
+import java.nio.file.Path
+
 interface FileDownloader {
-    suspend operator fun invoke(path: String): Result<String?>
+    suspend operator fun invoke(sourcePath: String, destinationPath: Path): Result<String?>
 }
