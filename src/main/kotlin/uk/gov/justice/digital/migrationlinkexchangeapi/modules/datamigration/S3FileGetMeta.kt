@@ -19,12 +19,7 @@ class S3FileGetMeta(private val s3ClientConfig: S3ClientConfig) : FileGetMeta {
     private val client =
         S3Client {
             region = s3ClientConfig.region
-            endpointUrl =
-                Url {
-                    scheme = Scheme.parse(s3ClientConfig.url.protocol)
-                    host = Host.parse(s3ClientConfig.url.host)
-                    port = s3ClientConfig.url.port
-                }
+            endpointUrl = s3ClientConfig.endpointUrl
             credentialsProvider = s3ClientConfig.credentials
             forcePathStyle = s3ClientConfig.forcePathStyle
         }
