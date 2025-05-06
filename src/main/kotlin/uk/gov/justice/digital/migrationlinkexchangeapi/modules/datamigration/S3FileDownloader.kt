@@ -18,13 +18,8 @@ class S3FileDownloader(private val s3ClientConfig: S3ClientConfig) : FileDownloa
     private val client =
         S3Client {
             region = s3ClientConfig.region
-            endpointUrl =
-                Url {
-                    scheme = Scheme.parse(s3ClientConfig.url.protocol)
-                    host = Host.parse(s3ClientConfig.url.host)
-                    port = s3ClientConfig.url.port
-                }
-            credentialsProvider = s3ClientConfig.credentials
+            endpointUrl = s3ClientConfig.endpointUrl
+            credentialsProvider = s3ClientConfig.credentials ?: null
             forcePathStyle = s3ClientConfig.forcePathStyle
         }
 
@@ -42,10 +37,3 @@ class S3FileDownloader(private val s3ClientConfig: S3ClientConfig) : FileDownloa
     }
 }
 
-data class S3ClientConfig(
-    val bucketName: String,
-    val region: String,
-    val url: URL,
-    val credentials: CredentialsProvider,
-    var forcePathStyle: Boolean = false,
-)
