@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component
 class DataSetInitializer(
   private val importer: DataSetImporter,
 
-  @Value("\${app.migration-csv-url}")
-  private val csvUrl: String,
+  @Value("\${app.migration-csv-path}")
+  private val datasetPath: String,
 ) {
 
   @EventListener(ApplicationReadyEvent::class)
   fun onApplicationReady() {
-    importer.importFromUrl(csvUrl)
+    importer.importFromS3Path(datasetPath)
   }
 }

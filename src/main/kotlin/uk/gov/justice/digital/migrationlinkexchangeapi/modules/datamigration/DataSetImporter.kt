@@ -69,10 +69,7 @@ class DataSetImporter(
     return digest.digest().joinToString(separator = "") { "%02x".format(it) }
   }
 
-  fun importFromUrl(fileUrl: String) {
-
-    val datasetPath = "build-output/dataset.csv"
-    val fsPath = Paths.get("/tmp/$datasetPath")
+  fun importFromS3Path(datasetPath: String) {
 
     val etag = try {
       getEtag(datasetPath)
@@ -85,6 +82,8 @@ class DataSetImporter(
       println("Migration with etag $etag has already been applied. Skipping.")
       return
     }
+
+    val fsPath = Paths.get("/tmp/$datasetPath")
 
     try {
       downloadFileToPath(
