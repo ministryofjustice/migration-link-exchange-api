@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface DataMigrationRepository : JpaRepository<DataMigration, Long> {
   fun existsByChecksum(checksum: String): Boolean
+  fun existsByEtag(etag: String): Boolean
 }

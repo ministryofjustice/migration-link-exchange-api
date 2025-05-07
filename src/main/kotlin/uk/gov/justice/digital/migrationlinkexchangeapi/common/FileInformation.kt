@@ -31,7 +31,7 @@ data class FileInformation(
   val googleOwnerEmail: String,
 
   @Column(name = "google_last_accessed_time")
-  val googleLastAccessedTime: OffsetDateTime,
+  val googleLastAccessedTime: OffsetDateTime? = null,
 
   @Column(name = "google_last_modifying_user")
   val googleLastModifyingUser: String,

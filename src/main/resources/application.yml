@@ -24,7 +24,7 @@ spring:
       WRITE_DATES_AS_TIMESTAMPS: false
 
 app:
-  migration-csv-url: http://localhost:8081/file-migration.csv
+  migration-csv-path: build-output/dataset.csv
 
 server:
   port: 8080

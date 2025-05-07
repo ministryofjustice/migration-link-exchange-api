@@ -5,16 +5,18 @@
 
 package uk.gov.justice.digital.migrationlinkexchangeapi.modules.datamigration
 
+import java.nio.file.Path
+
 class DownloadFile(private val downloader: FileDownloader) {
-    suspend operator fun invoke(path: String): Result<String> =
-        downloader(path).fold(
+    suspend operator fun invoke(sourcePath: String, destinationPath: Path): Result<String> =
+        downloader(sourcePath, destinationPath).fold(
             onFailure = {
                 Result.failure(it)
             },
             onSuccess = {
                 it?.let {
                     Result.success(it)
-                } ?: Result.failure(FileNotExists(path))
+                } ?: Result.failure(FileNotExists(sourcePath))
             },
         )
 }

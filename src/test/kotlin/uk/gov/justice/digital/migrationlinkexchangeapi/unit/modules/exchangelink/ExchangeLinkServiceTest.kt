@@ -87,4 +87,29 @@ class ExchangeLinkServiceTest {
     assertEquals(1, result.files.size)
     assertEquals(fileInfo, result.files[0])
   }
+
+  @Test
+  fun `should handle null googleLastAccessedTime`() {
+    val validUrl = "https://docs.google.com/file/d/xyz789/view"
+    val fileInfo = FileInformation(
+      googleFileId = "xyz789",
+      googleFileName = "doc-file.pdf",
+      googlePath = "/My Drive/test-folder/doc-file.pdf",
+      googleUrl = validUrl,
+      googleOwnerEmail = "docuser@example.com",
+      googleLastAccessedTime = null,
+      googleLastModifyingUser = "docmodifier@example.com",
+      microsoftUrl = "https://sharepoint.com/sites/team/Shared%20Documents/doc-file.docx",
+      microsoftPath = "/Shared Documents/test-folder/doc-file.docx",
+      microsoftFileType = "docx",
+    )
+    every { repository.findByGoogleFileId("xyz789") } returns listOf(fileInfo).toMutableList()
+
+    val result = service.getAllFileInformationByGoogleUrl(validUrl)
+    assertTrue(result is FileLookupResult.Success)
+
+    result as FileLookupResult.Success
+    assertEquals(1, result.files.size)
+    assertEquals(fileInfo, result.files[0])
+  }
 }

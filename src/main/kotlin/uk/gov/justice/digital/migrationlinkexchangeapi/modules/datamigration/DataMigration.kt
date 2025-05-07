@@ -16,5 +16,6 @@ data class DataMigration(
   val id: Long = 0,
   @Column(unique = true, nullable = false)
   val checksum: String,
+  val etag: String,
   val appliedAt: OffsetDateTime = OffsetDateTime.now(),
 )
