@@ -38,9 +38,6 @@ generic-service:
       DB_USERNAME: database_username
       DB_PASSWORD: database_password
 
-    migration-link-exchange-api:
-      APP_MIGRATION_CSV_URL: migration_csv_url
-
     s3-bucket-output:
       S3_BUCKET: bucket_name
 

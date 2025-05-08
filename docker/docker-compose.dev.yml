@@ -27,7 +27,6 @@ services:
     ports:
       - "5005:5005"
     environment:
-      APP_MIGRATION_CSV_URL: http://wiremock:8080/file-migration.csv
       S3_BUCKET: dev-bucket
       S3_REGION: "us-east-1"
       MINIO_USER: minio-user
