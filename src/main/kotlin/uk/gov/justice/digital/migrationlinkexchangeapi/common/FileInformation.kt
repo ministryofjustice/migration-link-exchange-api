@@ -18,13 +18,13 @@ data class FileInformation(
   @Column(name = "google_file_id", nullable = false)
   val googleFileId: String,
 
-  @Column(name = "google_file_name")
+  @Column(name = "google_file_name", columnDefinition = "TEXT")
   val googleFileName: String,
 
-  @Column(name = "google_path")
+  @Column(name = "google_path", columnDefinition = "TEXT")
   val googlePath: String,
 
-  @Column(name = "google_url")
+  @Column(name = "google_url", columnDefinition = "TEXT")
   val googleUrl: String,
 
   @Column(name = "google_owner_email")
@@ -36,10 +36,10 @@ data class FileInformation(
   @Column(name = "google_last_modifying_user")
   val googleLastModifyingUser: String,
 
-  @Column(name = "microsoft_url")
+  @Column(name = "microsoft_url", columnDefinition = "TEXT")
   val microsoftUrl: String,
 
-  @Column(name = "microsoft_path")
+  @Column(name = "microsoft_path", columnDefinition = "TEXT")
   val microsoftPath: String,
 
   @Column(name = "microsoft_file_type")
