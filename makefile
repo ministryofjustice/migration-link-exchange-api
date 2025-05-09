@@ -58,3 +58,7 @@ update: ## Downloads the latest versions of containers.
 save-logs: ## Saves docker container logs in a directory defined by OUTPUT_LOGS_DIR=
 	mkdir -p ${OUTPUT_LOGS_DIR}
 	docker logs ${PROJECT_NAME}-api-1 > ${OUTPUT_LOGS_DIR}/api.log
+
+psql: ## Opens a bash shell in the postgres container.
+	docker compose ${DEV_COMPOSE_FILES} exec postgres psql -U postgres -d migration-link-exchange-db
+
