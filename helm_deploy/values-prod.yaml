@@ -2,6 +2,9 @@
 # Per environment values which override defaults in migration-link-exchange-api/values.yaml
 
 generic-service:
+  # Temporarily set replica count to 1, during data migration phase.
+  replicaCount: 1
+
   ingress:
     enabled: false
 
