@@ -30,7 +30,7 @@ data class FileInformation(
   @Column(name = "google_owner_email", columnDefinition = "TEXT")
   val googleOwnerEmail: String,
 
-  @Column(name = "google_last_accessed_time", columnDefinition = "TEXT")
+  @Column(name = "google_last_accessed_time")
   val googleLastAccessedTime: OffsetDateTime? = null,
 
   @Column(name = "google_last_modifying_user", columnDefinition = "TEXT")
