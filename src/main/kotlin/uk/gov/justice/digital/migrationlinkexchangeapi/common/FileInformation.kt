@@ -15,7 +15,7 @@ data class FileInformation(
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Long? = null,
 
-  @Column(name = "google_file_id", nullable = false)
+  @Column(name = "google_file_id", nullable = false, columnDefinition = "TEXT")
   val googleFileId: String,
 
   @Column(name = "google_file_name", columnDefinition = "TEXT")
@@ -27,13 +27,13 @@ data class FileInformation(
   @Column(name = "google_url", columnDefinition = "TEXT")
   val googleUrl: String,
 
-  @Column(name = "google_owner_email")
+  @Column(name = "google_owner_email", columnDefinition = "TEXT")
   val googleOwnerEmail: String,
 
-  @Column(name = "google_last_accessed_time")
+  @Column(name = "google_last_accessed_time", columnDefinition = "TEXT")
   val googleLastAccessedTime: OffsetDateTime? = null,
 
-  @Column(name = "google_last_modifying_user")
+  @Column(name = "google_last_modifying_user", columnDefinition = "TEXT")
   val googleLastModifyingUser: String,
 
   @Column(name = "microsoft_url", columnDefinition = "TEXT")
@@ -42,6 +42,6 @@ data class FileInformation(
   @Column(name = "microsoft_path", columnDefinition = "TEXT")
   val microsoftPath: String,
 
-  @Column(name = "microsoft_file_type")
+  @Column(name = "microsoft_file_type", columnDefinition = "TEXT")
   val microsoftFileType: String,
 )
