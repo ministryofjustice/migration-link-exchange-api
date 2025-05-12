@@ -70,6 +70,10 @@ class DataSetImporter(
   }
 
   fun importFromS3Path(datasetPath: String) {
+    if (System.getenv("SKIP_IMPORT") == "true") {
+      println("Skipping import as SKIP_IMPORT is set to true.")
+      return
+    }
 
     val etag = try {
       getEtag(datasetPath)
