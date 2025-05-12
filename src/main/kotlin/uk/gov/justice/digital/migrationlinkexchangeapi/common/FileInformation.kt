@@ -44,4 +44,6 @@ data class FileInformation(
 
   @Column(name = "microsoft_file_type", columnDefinition = "TEXT")
   val microsoftFileType: String,
+
+  val createdAt: OffsetDateTime = OffsetDateTime.now(),
 )
