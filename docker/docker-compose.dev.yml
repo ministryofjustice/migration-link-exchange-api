@@ -65,5 +65,9 @@ services:
         mc config host add dataset http://minio:9000 minio-user minio-pass
         mc mb dataset/dev-bucket --ignore-existing
         mc anonymous set download dataset/dev-bucket;
+        while ! mc ls dataset/dev-bucket; do
+          echo 'Waiting for bucket to be created...'
+          sleep 1
+        done
         exit 0
       "
