@@ -25,8 +25,6 @@ build-api: ## Builds a production image of the API.
 dev-up: ## Starts/restarts the API in a development container. A remote debugger can be attached on port 5005.
 	docker compose ${DEV_COMPOSE_FILES} down ${SERVICE_NAME}
 	docker compose ${DEV_COMPOSE_FILES} up ${SERVICE_NAME} --wait --no-recreate ${SERVICE_NAME}
-	# Log the minio-init output for GitHub workflow debugging.
-	docker compose ${DEV_COMPOSE_FILES} logs -f minio-init
 
 dev-build: ## Builds a development image of the API.
 	docker compose ${DEV_COMPOSE_FILES} build ${SERVICE_NAME}

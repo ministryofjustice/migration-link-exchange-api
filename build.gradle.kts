@@ -21,7 +21,7 @@ dependencies {
   implementation("org.postgresql:postgresql")
 
   // S3 dependencies
-  implementation("aws.sdk.kotlin:s3:1.0.30") 
+  implementation("aws.sdk.kotlin:s3:1.4.91") 
 
   testImplementation("org.wiremock:wiremock-standalone:3.11.0")
   testImplementation("com.ninja-squad:springmockk:4.0.2")
