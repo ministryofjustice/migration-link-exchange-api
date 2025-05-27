@@ -25,6 +25,14 @@ import org.junit.jupiter.api.Assertions.assertTrue
  
 class GetMetaForFileIntegrationTest {
     @Test
+    fun `should ping minio`() {
+        // Get the IP of the minio container, given the hostname is set to minio
+        val ip = java.net.InetAddress.getByName("minio").hostAddress
+        // Check if the IP is not empty
+        assertTrue(ip.isNotEmpty(), "Minio IP should not be empty")
+    }
+
+    @Test
     fun `should get head successfully`() {
         val s3Endpoint = URI.create("http://minio:9000")
         `given there is a uploaded file in`("file.txt", s3Endpoint)
