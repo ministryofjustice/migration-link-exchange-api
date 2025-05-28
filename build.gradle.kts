@@ -13,7 +13,7 @@ configurations {
 
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
   implementation("com.jsoizo:kotlin-csv-jvm:1.10.0")
 
   // Database dependencies
@@ -25,7 +25,7 @@ dependencies {
 
   testImplementation("org.wiremock:wiremock-standalone:3.11.0")
   testImplementation("com.ninja-squad:springmockk:4.0.2")
-  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.25") {
+  testImplementation("io.swagger.parser.v3:swagger-parser:2.1.27") {
     exclude(group = "io.swagger.core.v3")
   }
 }
