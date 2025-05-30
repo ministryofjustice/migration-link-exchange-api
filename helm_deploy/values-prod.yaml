@@ -3,7 +3,7 @@
 
 generic-service:
   # Temporarily set replica count to 1, during data migration phase.
-  replicaCount: 1
+  # replicaCount: 1
 
   ingress:
     enabled: false
