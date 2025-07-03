@@ -32,7 +32,7 @@ services:
       MINIO_USER: minio-user
       MINIO_PASSWORD: minio-pass
       MINIO_ENDPOINT: http://minio:9000
-      # SKIP_IMPORT: "true"
+      SKIP_IMPORT: "true"
     volumes:
       - ..:/app
       - ~/.gradle:/home/gradle/.gradle
