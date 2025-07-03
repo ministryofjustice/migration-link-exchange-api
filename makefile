@@ -20,7 +20,7 @@ down: ## Stops and removes all containers in the project.
 	docker compose ${LOCAL_COMPOSE_FILES} down
 
 build-api: ## Builds a production image of the API.
-	docker-compose ${LOCAL_COMPOSE_FILES} build ${SERVICE_NAME}
+	docker compose ${LOCAL_COMPOSE_FILES} build ${SERVICE_NAME}
 
 dev-up: ## Starts/restarts the API in a development container. A remote debugger can be attached on port 5005.
 	docker compose ${DEV_COMPOSE_FILES} down ${SERVICE_NAME}
