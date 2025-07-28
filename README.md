@@ -54,3 +54,15 @@ The test suite can be ran using `make test`
 
 ### Linting
 Linting can be ran using `make lint` and `make lint-fix`
+
+### Deployment
+The service is deployed to the Cloud Platform.
+
+#### Manual deployment steps
+An index has been manually creaded on the `google_file_id` column of the `file_information` table to improve query performance.
+This can be done by running the following SQL command in the database:
+
+```sql
+-- Create an index on the google_file_id column of the file_information table
+CREATE INDEX google_file_id_idx ON file_information USING HASH (google_file_id); 
+```
